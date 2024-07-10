@@ -8,5 +8,17 @@
     <item
         android:id="@+id/vacationdelete"
         android:title="Delete Vacation" />
+    <item
+        android:id="@+id/alertstart"
+        android:title="Alert Start" />
+    <item
+        android:id="@+id/alertend"
+        android:title="Alert End" />
+    <item
+        android:id="@+id/alertfull"
+        android:title="Alert Full" />
+    <item
+        android:id="@+id/share"
+        android:title="Share" />
 
 </menu>
