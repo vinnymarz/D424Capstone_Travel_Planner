@@ -75,9 +75,9 @@ public class Vacations extends AppCompatActivity {
 
         if (item.getItemId() == R.id.mysample) {
             repository = new Repository(getApplication());
-            Vacation vacation = new Vacation(0, "Singapore", 1000.0);
+            Vacation vacation = new Vacation(0, "Singapore", "Marina Bay Sands", "07/10/24", "07/12/24");
             repository.insert(vacation);
-            vacation = new Vacation(0, "Dubai", 1000.0);
+            vacation = new Vacation(0, "Dubai", "Le Meridien Mina Seyahi", "07/10/24", "07/12/24");
             repository.insert(vacation);
             Excursion excursion = new Excursion(0, "Food Tasting Tour", 1);
             repository.insert(excursion);
