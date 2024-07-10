@@ -2,6 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -13,8 +14,24 @@
         android:theme="@style/Theme.D308VacationPlanner"
         tools:targetApi="31">
         <activity
-            android:name=".MainActivity"
-            android:exported="true">
+            android:name=".UI.ExcursionDetails"
+            android:exported="false"
+            android:label="Excursion Details"
+            android:parentActivityName=".UI.VacationDetails" />
+        <activity
+            android:name=".UI.VacationDetails"
+            android:exported="false"
+            android:label="Vacation Details"
+            android:parentActivityName=".UI.Vacations" />
+        <activity
+            android:name=".UI.Vacations"
+            android:exported="false"
+            android:label="Vacations"
+            android:parentActivityName=".UI.MainActivity" />
+        <activity
+            android:name=".UI.MainActivity"
+            android:exported="true"
+            android:label="MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
