@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">D308 Vacation Planner</string>
+    <string name="select_excursion_date">Select Excursion Date</string>
 </resources>

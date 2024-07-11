@@ -230,7 +230,7 @@ public class VacationDetails extends AppCompatActivity {
             }
             if (totalExcursions == 0) {
                 repository.delete(currentVacation);
-                Toast.makeText(VacationDetails.this, currentVacation.getVacationTitle() + " had been deleted", Toast.LENGTH_LONG).show();
+                Toast.makeText(VacationDetails.this, currentVacation.getVacationTitle() + " has been deleted", Toast.LENGTH_LONG).show();
                 VacationDetails.this.finish();
             } else {
                 Toast.makeText(VacationDetails.this, "Vacations with excursions cannot be deleted", Toast.LENGTH_LONG).show();
