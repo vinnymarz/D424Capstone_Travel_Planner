@@ -12,6 +12,7 @@ public class Excursion {
     private int vacationID;
     private String excursionDate;
 
+    // Constructor for the Excursion class, initializing its properties
     public Excursion(int excursionID, String excursionTitle, int vacationID, String excursionDate) {
         this.excursionID = excursionID;
         this.excursionTitle = excursionTitle;

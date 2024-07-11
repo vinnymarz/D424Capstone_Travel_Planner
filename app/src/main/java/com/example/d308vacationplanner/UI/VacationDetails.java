@@ -52,21 +52,19 @@ public class VacationDetails extends AppCompatActivity {
     String setEndDate;
     int vacationID;
     int totalExcursions;
-
     Random r = new Random();
     int setAlert = r.nextInt(9999);
-
     DatePickerDialog.OnDateSetListener startDate;
     DatePickerDialog.OnDateSetListener endDate;
     final Calendar myCalendarStart = Calendar.getInstance();
     final Calendar myCalendarEnd = Calendar.getInstance();
-    List<Excursion> selectedExcursions = new ArrayList<>(); //check variable
+    List<Excursion> selectedExcursions = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        // EdgeToEdge.enable(this);
         setContentView(R.layout.activity_vacation_details);
+
 
         repository = new Repository(getApplication());
         editTitle = findViewById(R.id.titletext);
@@ -78,6 +76,7 @@ public class VacationDetails extends AppCompatActivity {
         setEndDate = getIntent().getStringExtra("enddate");
         editTitle.setText(title);
         editHotel.setText(vacationHotel);
+        setAlert = r.nextInt(9999);
 
         FloatingActionButton fab = findViewById(R.id.floatingActionButton2);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -95,7 +94,7 @@ public class VacationDetails extends AppCompatActivity {
         recyclerView.setAdapter(excursionAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        for (Excursion e : repository.getmAllExcursions()) {
+        for (Excursion e: repository.getmAllExcursions()) {
             if (e.getVacationID() == vacationID) selectedExcursions.add(e);
         }
         excursionAdapter.setmExcursions(selectedExcursions);
@@ -121,7 +120,7 @@ public class VacationDetails extends AppCompatActivity {
             public void onClick(View view) {
                 Date date;
                 String info = editStartDate.getText().toString();
-                if (info.equals("")) info = setStartDate;
+                if (info.isEmpty()) info = setStartDate;
                 try {
                     myCalendarStart.setTime(sdf.parse(info));
                 } catch (ParseException e) {
@@ -198,14 +197,14 @@ public class VacationDetails extends AppCompatActivity {
             try {
                 Date startDate = sdf.parse(startDateString);
                 Date endDate = sdf.parse(endDateString);
+                assert endDate != null;
                 if (endDate.before(startDate)) {
                     Toast.makeText(this, "End date cannot be before start date", Toast.LENGTH_LONG).show();
                 } else {
                     Vacation vacation;
                     if (vacationID == -1) {
-                        if (repository.getmAllVacations().size() == 0) vacationID = 1;
-                        else
-                            vacationID = repository.getmAllVacations().get(repository.getmAllVacations().size() - 1).getVacationId() + 1;
+                        if (repository.getmAllVacations().isEmpty()) vacationID = 1;
+                        else vacationID = repository.getmAllVacations().get(repository.getmAllVacations().size() - 1).getVacationId() + 1;
                         vacation = new Vacation(vacationID, editTitle.getText().toString(), editHotel.getText().toString(), startDateString, endDateString);
                         repository.insert(vacation);
                         this.finish();
@@ -250,16 +249,6 @@ public class VacationDetails extends AppCompatActivity {
             return true;
         }
 
-        if (item.getItemId() == R.id.alertfull) {
-            String dateFromScreen = editStartDate.getText().toString();
-            String alert = "It's time for your vacation to " + title + "!";
-            alertPicker(dateFromScreen, alert);
-            dateFromScreen = editEndDate.getText().toString();
-            alert = "Your vacation in " + title + " is over.";
-            alertPicker(dateFromScreen, alert);
-            return true;
-        }
-
         if (item.getItemId() == R.id.share) {
             Intent sentIntent = new Intent();
             sentIntent.setAction(Intent.ACTION_SEND);
@@ -271,6 +260,7 @@ public class VacationDetails extends AppCompatActivity {
             shareData.append("End Date: " + editEndDate.getText().toString() + "\n");
             for (int i = 0; i < selectedExcursions.size(); i++) {
                 shareData.append("Excursion " + (i + 1) + ": " + selectedExcursions.get(i).getExcursionTitle() + "\n");
+                shareData.append("Excursion " + (i + 1) + "Date: " + selectedExcursions.get(i).getExcursionDate() + "\n");
             }
             sentIntent.putExtra(Intent.EXTRA_TEXT, shareData.toString());
             sentIntent.setType("text/plain");
@@ -293,7 +283,7 @@ public class VacationDetails extends AppCompatActivity {
         Long trigger = myDate.getTime();
         Intent intent = new Intent(VacationDetails.this, MyReceiver.class);
         intent.putExtra("key", alert);
-        PendingIntent sender = PendingIntent.getBroadcast(VacationDetails.this, setAlert, intent, PendingIntent.FLAG_IMMUTABLE);
+        PendingIntent sender = PendingIntent.getBroadcast(VacationDetails.this, setAlert, intent, PendingIntent.FLAG_ONE_SHOT | PendingIntent.FLAG_IMMUTABLE);
         AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
         alarmManager.set(AlarmManager.RTC_WAKEUP, trigger, sender);
     }
@@ -307,11 +297,11 @@ public class VacationDetails extends AppCompatActivity {
         final ExcursionAdapter excursionAdapter = new ExcursionAdapter(this);
         recyclerView.setAdapter(excursionAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        List<Excursion> filteredExcursions = new ArrayList<>();
-        for (Excursion e : repository.getmAllExcursions()) {
-            if (e.getVacationID() == vacationID) filteredExcursions.add(e);
+        List<Excursion> selectedExcursions = new ArrayList<>();
+        for (Excursion e: repository.getmAllExcursions()) {
+            if (e.getVacationID() == vacationID) selectedExcursions.add(e);
         }
-        excursionAdapter.setmExcursions(filteredExcursions);
+        excursionAdapter.setmExcursions(selectedExcursions);
         updateLabelStart();
         updateLabelEnd();
     }

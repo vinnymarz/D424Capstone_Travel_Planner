@@ -74,13 +74,13 @@ public class Vacations extends AppCompatActivity {
 
         if (item.getItemId() == R.id.mysample) {
             repository = new Repository(getApplication());
-            Vacation vacation = new Vacation(0, "Singapore", "Marina Bay Sands", "07/10/24", "07/12/24");
+            Vacation vacation = new Vacation(0, "Singapore", "Marina Bay Sands", "08/10/24", "08/12/24");
             repository.insert(vacation);
-            vacation = new Vacation(0, "Dubai", "Le Meridien Mina Seyahi", "07/10/24", "07/12/24");
+            vacation = new Vacation(0, "Dubai", "Le Meridien Mina Seyahi", "08/10/24", "08/12/24");
             repository.insert(vacation);
-            Excursion excursion = new Excursion(0, "Food Tasting Tour", 1, "07/10/24");
+            Excursion excursion = new Excursion(0, "Food Tasting Tour", 1, "08/10/24");
             repository.insert(excursion);
-            excursion = new Excursion(0, "Sightseeing", 1, "07/10/24");
+            excursion = new Excursion(0, "Sightseeing", 1, "08/10/24");
             repository.insert(excursion);
             return true;
         }

@@ -11,10 +11,12 @@ import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+// Repository class to handle data interactions with the database
 public class Repository {
     private ExcursionDAO mExcursionDAO;
     private VacationDAO mVacationDAO;
 
+    // Lists to hold all vacations and excursions
     private List<Vacation> mAllVacations;
     private List<Excursion> mAllExcursions;
 
@@ -31,21 +33,21 @@ public class Repository {
         databaseExecutor.execute(() -> {
             mAllVacations = mVacationDAO.getAllVacations();
         });
-        try {
+        try{
             Thread.sleep(1000);
-        } catch (InterruptedException e) {
+        } catch(InterruptedException e) {
             throw new RuntimeException(e);
         }
         return mAllVacations;
     }
 
-    public void insert(Vacation vacation) {
+    public void insert (Vacation vacation) {
         databaseExecutor.execute(() -> {
             mVacationDAO.insert(vacation);
         });
-        try {
+        try{
             Thread.sleep(1000);
-        } catch (InterruptedException e) {
+        } catch(InterruptedException e) {
             throw new RuntimeException(e);
         }
     }
@@ -54,9 +56,9 @@ public class Repository {
         databaseExecutor.execute(() -> {
             mVacationDAO.update(vacation);
         });
-        try {
+        try{
             Thread.sleep(1000);
-        } catch (InterruptedException e) {
+        } catch(InterruptedException e) {
             throw new RuntimeException(e);
         }
     }
@@ -65,9 +67,9 @@ public class Repository {
         databaseExecutor.execute(() -> {
             mVacationDAO.delete(vacation);
         });
-        try {
+        try{
             Thread.sleep(1000);
-        } catch (InterruptedException e) {
+        } catch(InterruptedException e) {
             throw new RuntimeException(e);
         }
     }
@@ -76,9 +78,9 @@ public class Repository {
         databaseExecutor.execute(() -> {
             mAllExcursions = mExcursionDAO.getAllExcursions();
         });
-        try {
+        try{
             Thread.sleep(1000);
-        } catch (InterruptedException e) {
+        } catch(InterruptedException e) {
             throw new RuntimeException(e);
         }
         return mAllExcursions;
@@ -88,9 +90,9 @@ public class Repository {
         databaseExecutor.execute(() -> {
             mAllExcursions = mExcursionDAO.getAssociatedExcursions(vacationID);
         });
-        try {
+        try{
             Thread.sleep(1000);
-        } catch (InterruptedException e) {
+        } catch(InterruptedException e) {
             throw new RuntimeException(e);
         }
         return mAllExcursions;
@@ -100,9 +102,9 @@ public class Repository {
         databaseExecutor.execute(() -> {
             mExcursionDAO.insert(excursion);
         });
-        try {
+        try{
             Thread.sleep(1000);
-        } catch (InterruptedException e) {
+        } catch(InterruptedException e) {
             throw new RuntimeException(e);
         }
     }
@@ -111,9 +113,9 @@ public class Repository {
         databaseExecutor.execute(() -> {
             mExcursionDAO.update(excursion);
         });
-        try {
+        try{
             Thread.sleep(1000);
-        } catch (InterruptedException e) {
+        } catch(InterruptedException e) {
             throw new RuntimeException(e);
         }
     }
@@ -122,9 +124,9 @@ public class Repository {
         databaseExecutor.execute(() -> {
             mExcursionDAO.delete(excursion);
         });
-        try {
+        try{
             Thread.sleep(1000);
-        } catch (InterruptedException e) {
+        } catch(InterruptedException e) {
             throw new RuntimeException(e);
         }
     }

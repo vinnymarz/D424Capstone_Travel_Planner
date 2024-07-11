@@ -13,7 +13,7 @@ public class Vacation {
     private String startDate;
     private String endDate;
 
-
+    // Constructor for the Vacation class, initializing its properties
     public Vacation(int vacationId, String vacationTitle, String vacationHotel, String startDate, String endDate) {
         this.vacationId = vacationId;
         this.vacationTitle = vacationTitle;

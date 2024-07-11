@@ -15,23 +15,27 @@ import com.example.d308vacationplanner.entities.Vacation;
 
 import java.util.List;
 
+// Adapter for displaying a list of vacations in a RecyclerView
 public class VacationAdapter extends RecyclerView.Adapter<VacationAdapter.VacationViewHolder> {
 
     private List<Vacation> mVacations;
     private final Context context;
     private final LayoutInflater mInflater;
 
+    // Constructor to initialize the adapter
     public VacationAdapter(Context context) {
         mInflater = LayoutInflater.from(context);
         this.context = context;
     }
 
+    // ViewHolder for individual vacation items
     public class VacationViewHolder extends RecyclerView.ViewHolder {
         private final TextView vacationItemView;
 
+        // Constructor to initialize the ViewHolder and set click listener
         public VacationViewHolder(@NonNull View itemView) {
             super(itemView);
-            vacationItemView = itemView.findViewById(R.id.textView2); //vacation list item
+            vacationItemView = itemView.findViewById(R.id.textView2);
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -49,6 +53,7 @@ public class VacationAdapter extends RecyclerView.Adapter<VacationAdapter.Vacati
         }
     }
 
+    // Creates a new ViewHolder instance
     @NonNull
     @Override
     public VacationAdapter.VacationViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -56,6 +61,7 @@ public class VacationAdapter extends RecyclerView.Adapter<VacationAdapter.Vacati
         return new VacationViewHolder(itemView);
     }
 
+    // Binds data to the ViewHolder
     @Override
     public void onBindViewHolder(@NonNull VacationAdapter.VacationViewHolder holder, int position) {
         if (mVacations != null) {
@@ -76,6 +82,7 @@ public class VacationAdapter extends RecyclerView.Adapter<VacationAdapter.Vacati
         }
     }
 
+    // Sets the list of vacations and notifies the adapter of data changes
     public void setVacations(List<Vacation> vacations) {
         mVacations = vacations;
         notifyDataSetChanged();

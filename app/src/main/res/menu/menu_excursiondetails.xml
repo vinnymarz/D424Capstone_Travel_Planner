@@ -8,4 +8,8 @@
     <item
         android:id="@+id/excursiondelete"
         android:title="Delete Excursion" />
+
+    <item
+        android:id="@+id/excursionalert"
+        android:title="Set Alert" />
 </menu>
