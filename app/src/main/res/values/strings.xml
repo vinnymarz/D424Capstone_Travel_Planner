@@ -1,4 +1,16 @@
 <resources>
     <string name="app_name">D308 Vacation Planner</string>
     <string name="select_excursion_date">Select Excursion Date</string>
+    <string name="excursion">Excursion:</string>
+    <string name="enter_excursion">enter excursion</string>
+    <string name="vacation_planner">Vacation Planner</string>
+    <string name="home">Home</string>
+    <string name="vacation">Vacation:</string>
+    <string name="enter_destination">enter destination</string>
+    <string name="hotel_name">Hotel Name:</string>
+    <string name="enter_hotel">enter hotel</string>
+    <string name="select_check_in_date">Select Check-in Date</string>
+    <string name="select_check_out_date">Select Check-out Date</string>
+    <string name="add_excursion">Add Excursion</string>
+    <string name="add_vacation">Add Vacation</string>
 </resources>

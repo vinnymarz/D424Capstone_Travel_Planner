@@ -11,24 +11,30 @@ import com.example.d308vacationplanner.dao.VacationDAO;
 import com.example.d308vacationplanner.entities.Excursion;
 import com.example.d308vacationplanner.entities.Vacation;
 
-@Database(entities = {Vacation.class, Excursion.class}, version = 4, exportSchema = false)
+// Defines a Room database for storing vacation and excursion data
+@Database(entities = {Vacation.class, Excursion.class}, version = 11, exportSchema = false)
 public abstract class VacationDatabaseBuilder extends RoomDatabase {
 
+    // Provides access to the DAO for interacting with Vacation entities
     public abstract VacationDAO vacationDAO();
 
+    // Provides access to the DAO for interacting with Excursion entities
     public abstract ExcursionDAO excursionDAO();
 
+    // Instance of the database builder
     private static volatile VacationDatabaseBuilder INSTANCE;
 
-    // determines asynchronous database
+    // Retrieves the asynchronous instance of the database builder
     static VacationDatabaseBuilder getDatabase(final Context context) {
         if (INSTANCE == null) {
+            // Synchronized block for thread-safety
             synchronized (VacationDatabaseBuilder.class) {
                 if (INSTANCE == null) {
-                    INSTANCE = Room.databaseBuilder(context.getApplicationContext(), VacationDatabaseBuilder.class, "MyVacationDatabase.db")
+                    // Builds the Room database instance
+                    INSTANCE = Room.databaseBuilder(context.getApplicationContext(),
+                                    VacationDatabaseBuilder.class, "MyVacationDatabase.db")
+                            // Performs destructive migration on schema mismatch
                             .fallbackToDestructiveMigration()
-                            //if synchronous database instead
-                            //.allowMainThreadQueries()
                             .build();
                 }
             }

@@ -11,10 +11,12 @@ import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+// Repository class to handle data interactions with the database
 public class Repository {
     private ExcursionDAO mExcursionDAO;
     private VacationDAO mVacationDAO;
 
+    // Lists to hold all vacations and excursions
     private List<Vacation> mAllVacations;
     private List<Excursion> mAllExcursions;
 

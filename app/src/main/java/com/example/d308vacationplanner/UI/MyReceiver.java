@@ -12,10 +12,12 @@ import androidx.core.app.NotificationCompat;
 
 import com.example.d308vacationplanner.R;
 
+// Define channelID for notifications
 public class MyReceiver extends BroadcastReceiver {
     String channelID = "test";
     static int notificationID;
 
+    // Display toast message, create notification channel, and notification
     @Override
     public void onReceive(Context context, Intent intent) {
         Toast.makeText(context, intent.getStringExtra("key"), Toast.LENGTH_LONG).show();
@@ -28,6 +30,7 @@ public class MyReceiver extends BroadcastReceiver {
         notificationManager.notify(notificationID++, n);
     }
 
+    // Register channel with the system
     private void createNotificationChannel(Context context, String CHANNEL_ID) {
         CharSequence name = "mychannelname";
         String description = "mychanneldescription";
