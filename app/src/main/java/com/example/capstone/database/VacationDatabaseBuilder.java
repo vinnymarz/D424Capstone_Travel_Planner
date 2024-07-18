@@ -1,4 +1,4 @@
-package com.example.d308vacationplanner.database;
+package com.example.capstone.database;
 
 import android.content.Context;
 
@@ -6,10 +6,10 @@ import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
 
-import com.example.d308vacationplanner.dao.ExcursionDAO;
-import com.example.d308vacationplanner.dao.VacationDAO;
-import com.example.d308vacationplanner.entities.Excursion;
-import com.example.d308vacationplanner.entities.Vacation;
+import com.example.capstone.dao.ExcursionDAO;
+import com.example.capstone.dao.VacationDAO;
+import com.example.capstone.entities.Excursion;
+import com.example.capstone.entities.Vacation;
 
 // Defines a Room database for storing vacation and excursion data
 @Database(entities = {Vacation.class, Excursion.class}, version = 11, exportSchema = false)

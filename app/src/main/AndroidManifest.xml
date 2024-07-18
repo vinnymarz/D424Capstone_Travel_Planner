@@ -14,28 +14,29 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.D308VacationPlanner"
         tools:targetApi="31">
+
         <receiver
-            android:name=".UI.MyReceiver"
+            android:name="com.example.capstone.UI.MyReceiver"
             android:enabled="true"
             android:exported="true" />
 
         <activity
-            android:name=".UI.ExcursionDetails"
+            android:name="com.example.capstone.UI.ExcursionDetails"
             android:exported="false"
             android:label="Excursion Details"
-            android:parentActivityName=".UI.VacationDetails" />
+            android:parentActivityName="com.example.capstone.UI.VacationDetails" />
         <activity
-            android:name=".UI.VacationDetails"
+            android:name="com.example.capstone.UI.VacationDetails"
             android:exported="false"
             android:label="Vacation Details"
-            android:parentActivityName=".UI.Vacations" />
+            android:parentActivityName="com.example.capstone.UI.Vacations" />
         <activity
-            android:name=".UI.Vacations"
+            android:name="com.example.capstone.UI.Vacations"
             android:exported="false"
             android:label="Vacations"
-            android:parentActivityName=".UI.MainActivity" />
+            android:parentActivityName="com.example.capstone.UI.MainActivity" />
         <activity
-            android:name=".UI.MainActivity"
+            android:name="com.example.capstone.UI.MainActivity"
             android:exported="true"
             android:label="V. Martinez ID #011338427">
             <intent-filter>

@@ -1,4 +1,4 @@
-package com.example.d308vacationplanner.UI;
+package com.example.capstone.UI;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -6,18 +6,14 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
-import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.d308vacationplanner.R;
-import com.example.d308vacationplanner.database.Repository;
-import com.example.d308vacationplanner.entities.Excursion;
-import com.example.d308vacationplanner.entities.Vacation;
+import com.example.d424.capstone.R;
+import com.example.capstone.database.Repository;
+import com.example.capstone.entities.Excursion;
+import com.example.capstone.entities.Vacation;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.List;

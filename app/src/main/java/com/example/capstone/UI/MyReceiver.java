@@ -1,4 +1,4 @@
-package com.example.d308vacationplanner.UI;
+package com.example.capstone.UI;
 
 import android.app.Notification;
 import android.app.NotificationChannel;
@@ -10,7 +10,7 @@ import android.widget.Toast;
 
 import androidx.core.app.NotificationCompat;
 
-import com.example.d308vacationplanner.R;
+import com.example.d424.capstone.R;
 
 // Define channelID for notifications
 public class MyReceiver extends BroadcastReceiver {
