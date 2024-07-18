@@ -24,6 +24,7 @@ import com.example.d424.capstone.R;
 import com.example.capstone.database.Repository;
 import com.example.capstone.entities.Excursion;
 import com.example.capstone.entities.Vacation;
+import com.example.capstone.entities.Car;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.text.ParseException;
@@ -57,6 +58,7 @@ public class VacationDetails extends AppCompatActivity {
     final Calendar myCalendarStart = Calendar.getInstance();
     final Calendar myCalendarEnd = Calendar.getInstance();
     List<Excursion> selectedExcursions = new ArrayList<>();
+    List<Car> selectedCars = new ArrayList<>();
     boolean clicked;
 
     Animation rotateOpen;
@@ -112,9 +114,7 @@ public class VacationDetails extends AppCompatActivity {
         FloatingActionButton fabOpenCarRental = findViewById(R.id.car_btn);
         fabOpenCarRental.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-                // TODO: Implement car rental logic
-            }
+            public void onClick(View view) { openCarDetails(vacationID); }
         });
 
 
@@ -130,6 +130,21 @@ public class VacationDetails extends AppCompatActivity {
             if (e.getVacationID() == vacationID) selectedExcursions.add(e);
         }
         excursionAdapter.setmExcursions(selectedExcursions);
+
+
+        // Initialize Recycler view for cars
+        RecyclerView recyclerView2 = findViewById(R.id.carrecyclerview);
+        repository = new Repository(getApplication());
+        final CarAdapter carAdapter = new CarAdapter(this);
+        recyclerView2.setAdapter(carAdapter);
+        recyclerView2.setLayoutManager(new LinearLayoutManager(this));
+
+        // Populate selectedCars list with cars related to this vacation
+        for (Car c : repository.getmAllCars()) {
+            if (c.getVacationID() == vacationID) selectedCars.add(c);
+        }
+        carAdapter.setmCars(selectedCars);
+
 
         String myFormat = "MM/dd/yy";
         SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
@@ -296,6 +311,11 @@ public class VacationDetails extends AppCompatActivity {
                 shareData.append("Excursion " + (i + 1) + ": " + selectedExcursions.get(i).getExcursionTitle() + "\n");
                 shareData.append("Excursion " + (i + 1) + "Date: " + selectedExcursions.get(i).getExcursionDate() + "\n");
             }
+            for (int i = 0; i < selectedCars.size(); i++) {
+                shareData.append("Car " + (i + 1) + ": " + selectedCars.get(i).getCarTitle() + "\n");
+                shareData.append("Car " + (i + 1) + "Date: " + selectedCars.get(i).getCarDate() + "\n");
+            }
+
             sentIntent.putExtra(Intent.EXTRA_TEXT, shareData.toString());
             sentIntent.setType("text/plain");
             Intent shareIntent = Intent.createChooser(sentIntent, null);
@@ -322,10 +342,12 @@ public class VacationDetails extends AppCompatActivity {
         alarmManager.set(AlarmManager.RTC_WAKEUP, trigger, sender);
     }
 
+    // To - DO: Fix RecyclerView for Cars
     @Override
     protected void onResume() {
         super.onResume();
 
+        // Excursion RecyclerView setup
         RecyclerView recyclerView = findViewById(R.id.excursionrecyclerview);
         repository = new Repository(getApplication());
         final ExcursionAdapter excursionAdapter = new ExcursionAdapter(this);
@@ -336,8 +358,21 @@ public class VacationDetails extends AppCompatActivity {
             if (e.getVacationID() == vacationID) selectedExcursions.add(e);
         }
         excursionAdapter.setmExcursions(selectedExcursions);
+
+        // Car RecyclerView setup
+        RecyclerView carRecyclerView = findViewById(R.id.carrecyclerview);
+        final CarAdapter carAdapter = new CarAdapter(this);
+        carRecyclerView.setAdapter(carAdapter);
+        carRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        List<Car> selectedCars = new ArrayList<>();
+        for (Car c : repository.getmAllCars()) {
+            if (c.getVacationID() == vacationID) selectedCars.add(c);
+        }
+        carAdapter.setmCars(selectedCars);
+
         updateLabelStart();
         updateLabelEnd();
+
     }
 
     private void onAddButtonClicked() {
@@ -387,5 +422,12 @@ public class VacationDetails extends AppCompatActivity {
         intent.putExtra("vacationID", vacationID);
         startActivity(intent);
     }
+
+    private void openCarDetails(int vacationID) {
+        Intent intent = new Intent(VacationDetails.this, CarDetails.class);
+        intent.putExtra("vacationID", vacationID);
+        startActivity(intent);
+    }
+
 }
 

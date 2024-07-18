@@ -14,6 +14,11 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.D308VacationPlanner"
         tools:targetApi="31">
+        <activity
+            android:name="com.example.capstone.UI.CarDetails"
+            android:exported="false"
+            android:label="Car Rental Details"
+            android:parentActivityName="com.example.capstone.UI.VacationDetails" />
 
         <receiver
             android:name="com.example.capstone.UI.MyReceiver"
@@ -28,17 +33,17 @@
         <activity
             android:name="com.example.capstone.UI.VacationDetails"
             android:exported="false"
-            android:label="Vacation Details"
+            android:label="Travel Details"
             android:parentActivityName="com.example.capstone.UI.Vacations" />
         <activity
             android:name="com.example.capstone.UI.Vacations"
             android:exported="false"
-            android:label="Vacations"
+            android:label="Saved Travel Itineraries"
             android:parentActivityName="com.example.capstone.UI.MainActivity" />
         <activity
             android:name="com.example.capstone.UI.MainActivity"
             android:exported="true"
-            android:label="V. Martinez ID #011338427">
+            android:label="Home">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

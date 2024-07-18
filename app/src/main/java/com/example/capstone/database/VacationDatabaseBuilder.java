@@ -8,11 +8,13 @@ import androidx.room.RoomDatabase;
 
 import com.example.capstone.dao.ExcursionDAO;
 import com.example.capstone.dao.VacationDAO;
+import com.example.capstone.dao.CarDAO;
 import com.example.capstone.entities.Excursion;
 import com.example.capstone.entities.Vacation;
+import com.example.capstone.entities.Car;
 
-// Defines a Room database for storing vacation and excursion data
-@Database(entities = {Vacation.class, Excursion.class}, version = 11, exportSchema = false)
+// Defines a Room database for storing vacation, excursion and rental data
+@Database(entities = {Vacation.class, Excursion.class, Car.class}, version = 12, exportSchema = false)
 public abstract class VacationDatabaseBuilder extends RoomDatabase {
 
     // Provides access to the DAO for interacting with Vacation entities
@@ -20,6 +22,9 @@ public abstract class VacationDatabaseBuilder extends RoomDatabase {
 
     // Provides access to the DAO for interacting with Excursion entities
     public abstract ExcursionDAO excursionDAO();
+
+    // Provides access to the DAO for interacting with Rental entities
+    public abstract CarDAO carDAO();
 
     // Instance of the database builder
     private static volatile VacationDatabaseBuilder INSTANCE;
