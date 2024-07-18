@@ -9,6 +9,9 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -59,6 +62,13 @@ public class VacationDetails extends AppCompatActivity {
     final Calendar myCalendarStart = Calendar.getInstance();
     final Calendar myCalendarEnd = Calendar.getInstance();
     List<Excursion> selectedExcursions = new ArrayList<>();
+    boolean clicked;
+
+    Animation rotateOpen;
+    Animation rotateClose;
+    Animation fromBottom;
+    Animation toBottom;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,17 +88,40 @@ public class VacationDetails extends AppCompatActivity {
         editTitle.setText(title);
         editHotel.setText(vacationHotel);
         setAlert = r.nextInt(9999);
+        clicked = false;
+        rotateOpen = AnimationUtils.loadAnimation(this, R.anim.rotate_open_anim);
+        rotateClose = AnimationUtils.loadAnimation(this, R.anim.rotate_close_anim);
+        fromBottom = AnimationUtils.loadAnimation(this, R.anim.from_bottom_anim);
+        toBottom = AnimationUtils.loadAnimation(this, R.anim.to_bottom_anim);
 
-        // Set up FAB to open ExcursionDetails activity
-        FloatingActionButton fab = findViewById(R.id.floatingActionButton2);
-        fab.setOnClickListener(new View.OnClickListener() {
+
+        // Set up FAB to open Excursion and Rental car buttons
+        FloatingActionButton fabOpenOptions = findViewById(R.id.add_btn);
+        fabOpenOptions.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(VacationDetails.this, ExcursionDetails.class);
-                intent.putExtra("vacationID", vacationID);
-                startActivity(intent);
+               onAddButtonClicked();
             }
         });
+
+        // Set up FAB to open Excursion Details activity
+        FloatingActionButton fabOpenExcursionDetails = findViewById(R.id.activity_btn);
+        fabOpenExcursionDetails.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                openExcursionDetails(vacationID);
+            }
+        });
+
+        // Set up FAB to open Car Rental activity
+        FloatingActionButton fabOpenCarRental = findViewById(R.id.car_btn);
+        fabOpenCarRental.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // TODO: Implement car rental logic
+            }
+        });
+
 
         // Initialize RecyclerView for excursions
         RecyclerView recyclerView = findViewById(R.id.excursionrecyclerview);
@@ -119,6 +152,7 @@ public class VacationDetails extends AppCompatActivity {
 
         editStartDate = findViewById(R.id.startDate);
         editEndDate = findViewById(R.id.endDate);
+
         editStartDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -310,4 +344,53 @@ public class VacationDetails extends AppCompatActivity {
         updateLabelStart();
         updateLabelEnd();
     }
+
+    private void onAddButtonClicked() {
+        setVisibility(clicked);
+        setAnimation(clicked);
+        setClickable(clicked);
+        clicked = !clicked;
+    }
+
+    // Makes invisible buttons visible
+    private void setVisibility(boolean clicked) {
+        if (!clicked) {
+            findViewById(R.id.activity_btn).setVisibility(View.VISIBLE);
+            findViewById(R.id.car_btn).setVisibility(View.VISIBLE);
+        } else {
+            findViewById(R.id.activity_btn).setVisibility(View.INVISIBLE);
+            findViewById(R.id.car_btn).setVisibility(View.INVISIBLE);
+        }
+    }
+
+    // Set button animation
+    private void setAnimation(boolean clicked) {
+        if (!clicked) {
+            findViewById(R.id.activity_btn).startAnimation(fromBottom);
+            findViewById(R.id.car_btn).startAnimation(fromBottom);
+            findViewById(R.id.add_btn).startAnimation(rotateOpen);
+        } else {
+            findViewById(R.id.activity_btn).startAnimation(toBottom);
+            findViewById(R.id.car_btn).startAnimation(toBottom);
+            findViewById(R.id.add_btn).startAnimation(rotateClose);
+        }
+    }
+
+    // Disables hidden buttons from bring clicked
+    private void setClickable(boolean clicked) {
+        if (!clicked) {
+            findViewById(R.id.activity_btn).setClickable(true);
+            findViewById(R.id.car_btn).setClickable(true);
+        } else {
+            findViewById(R.id.activity_btn).setClickable(false); // Disable buttons if clicked
+            findViewById(R.id.car_btn).setClickable(false);
+        }
+    }
+
+    private void openExcursionDetails(int vacationID) {
+        Intent intent = new Intent(VacationDetails.this, ExcursionDetails.class);
+        intent.putExtra("vacationID", vacationID);
+        startActivity(intent);
+    }
 }
+
