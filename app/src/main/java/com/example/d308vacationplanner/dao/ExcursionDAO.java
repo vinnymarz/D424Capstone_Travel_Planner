@@ -11,6 +11,7 @@ import com.example.d308vacationplanner.entities.Excursion;
 
 import java.util.List;
 
+// DAO for Excursion
 @Dao
 public interface ExcursionDAO {
     @Insert(onConflict = OnConflictStrategy.IGNORE)
