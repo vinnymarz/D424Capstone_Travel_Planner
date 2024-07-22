@@ -11,6 +11,11 @@ public class Car {
     private int vacationID;
     private String carDate;
 
+    @Override
+    public String toString() {
+        return carTitle; // Return the carTitle in the spinner
+    }
+
     // Constructor for the Car class, initializing its properties
     public Car(int carID, String carTitle, int vacationID, String carDate) {
         this.carID = carID;

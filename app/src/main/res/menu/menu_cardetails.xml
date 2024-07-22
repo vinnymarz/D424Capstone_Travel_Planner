@@ -5,11 +5,5 @@
     <item
         android:id="@+id/carsave"
         android:title="Save Rental" />
-    <item
-        android:id="@+id/cardelete"
-        android:title="Delete Rental" />
-
-    <item
-        android:id="@+id/caralert"
-        android:title="Set Alert" />
+    
 </menu>

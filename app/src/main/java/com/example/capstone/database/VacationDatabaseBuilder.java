@@ -14,7 +14,7 @@ import com.example.capstone.entities.Vacation;
 import com.example.capstone.entities.Car;
 
 // Defines a Room database for storing vacation, excursion and rental data
-@Database(entities = {Vacation.class, Excursion.class, Car.class}, version = 12, exportSchema = false)
+@Database(entities = {Vacation.class, Excursion.class, Car.class}, version = 15, exportSchema = false)
 public abstract class VacationDatabaseBuilder extends RoomDatabase {
 
     // Provides access to the DAO for interacting with Vacation entities

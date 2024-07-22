@@ -70,6 +70,8 @@ public class CarAdapter extends RecyclerView.Adapter<CarAdapter.CarViewHolder> {
             String carTitle = current.getCarTitle();
             int vacationID = current.getVacationID();
             holder.carItemView.setText(carTitle);
+        } else {
+            holder.carItemView.setText("No car title");
         }
     }
 

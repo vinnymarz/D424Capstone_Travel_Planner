@@ -9,6 +9,7 @@ import com.example.capstone.entities.Car;
 import com.example.capstone.entities.Excursion;
 import com.example.capstone.entities.Vacation;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -160,6 +161,35 @@ public class Repository {
         return mAllCars;
     }
 
+    public List<Car> getAvailableCars(int vacationId) {
+        List<Car> availableCarsList = new ArrayList<>();
+
+        // Use the ExecutorService to run the database query on a background thread
+        databaseExecutor.execute(() -> {
+            // Fetch the vacation by its ID
+            Vacation vacation = getVacationById(vacationId);
+
+            if (vacation != null) {
+                String vacationStartDate = vacation.getStartDate();
+                String vacationEndDate = vacation.getEndDate();
+
+                availableCarsList.add(new Car(1, "KIA Carnival", -1, vacationStartDate + " - " + vacationEndDate));
+                availableCarsList.add(new Car(2, "Honda Accord", -1, vacationStartDate + " - " + vacationEndDate));
+                availableCarsList.add(new Car(3, "Ford Mustang", -1, vacationStartDate + " - " + vacationEndDate));
+                availableCarsList.add(new Car(4, "Dodge 1500", -1, vacationStartDate + " - " + vacationEndDate));
+                availableCarsList.add(new Car(5, "Chevrolet Tahoe", -1, vacationStartDate + " - " + vacationEndDate));
+                availableCarsList.add(new Car(6, "Ford Transit", -1, vacationStartDate + " - " + vacationEndDate));
+            }
+        });
+
+        return availableCarsList;
+    }
+
+    private Vacation getVacationById(int vacationId) {
+        // Use your mVacationDAO to fetch the vacation from the database
+        return mVacationDAO.getVacationById(vacationId);
+    }
+
     public void insert(Car car) {
         databaseExecutor.execute(() -> {
             mCarDAO.insert(car);
@@ -191,5 +221,9 @@ public class Repository {
         } catch(InterruptedException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public Car getCarById(int carId) {
+        return mCarDAO.getCarById(carId);
     }
 }

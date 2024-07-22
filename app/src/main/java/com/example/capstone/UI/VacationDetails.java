@@ -6,6 +6,7 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -426,6 +427,7 @@ public class VacationDetails extends AppCompatActivity {
     private void openCarDetails(int vacationID) {
         Intent intent = new Intent(VacationDetails.this, CarDetails.class);
         intent.putExtra("vacationID", vacationID);
+        Log.d("VacationDetails", "Starting CarDetails with vacationID: " + vacationID);
         startActivity(intent);
     }
 

@@ -6,11 +6,14 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -33,81 +36,40 @@ import java.util.Random;
 public class CarDetails extends AppCompatActivity {
 
     private Repository repository;
-    Car activeCar;
-    EditText editCarTitle;
-    String carTitle;
-    String setDate;
-    int setAlert;
-    int carID;
-    int vacationID;
-    TextView editCarDate;
-    DatePickerDialog.OnDateSetListener carDate;
-    final Calendar myCalendarDate = Calendar.getInstance();
+    private Spinner carSpinner;
+    private List<Car> availableCars;
+    private int vacationID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_car_details);
 
-        Random r = new Random();
-        setAlert = r.nextInt(9999);
-
         repository = new Repository(getApplication());
-        carTitle = getIntent().getStringExtra("title");
-        editCarTitle = findViewById(R.id.carTitle);
-        editCarTitle.setText(carTitle);
-        carID = getIntent().getIntExtra("carID", -1);
+        carSpinner = findViewById(R.id.carSpinner);
         vacationID = getIntent().getIntExtra("vacationID", -1);
-        setDate = getIntent().getStringExtra("carDate");
-        String myFormat = "MM/dd/yy";
-        SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
+        Log.d("CarDetails", "Received vacationID: " + vacationID);
 
-        if (setDate != null) {
-            try {
-                Date carDate = sdf.parse(setDate);
-                myCalendarDate.setTime(carDate);
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
-        }
+        // Fetch available cars from your repository
+        availableCars = repository.getAvailableCars(vacationID);
 
-        editCarDate = findViewById(R.id.carDate);
+        // Set up Spinner adapter
+        ArrayAdapter<Car> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, availableCars);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        carSpinner.setAdapter(adapter);
+        adapter.notifyDataSetChanged();
 
-        // Set click listener for rental date TextView to open date picker dialog
-        editCarDate.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Date date;
-                String info = editCarDate.getText().toString();
-                if (info.equals("")) info = setDate;
-                try {
-                    myCalendarDate.setTime(sdf.parse(info));
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                }
-                new DatePickerDialog(CarDetails.this, carDate, myCalendarDate
-                        .get(Calendar.YEAR), myCalendarDate.get(Calendar.MONTH),
-                        myCalendarDate.get(Calendar.DAY_OF_MONTH)).show();
-            }
-        });
 
-        // Set listener for date picker dialog to update date when selected
-        carDate = new DatePickerDialog.OnDateSetListener() {
-            @Override
-            public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                myCalendarDate.set(Calendar.YEAR, year);
-                myCalendarDate.set(Calendar.MONTH, month);
-                myCalendarDate.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-                updateLabel();
-            }
-        };
     }
 
+    /*
     private void updateLabel() {
         String myFormat = "MM/dd/yy";
         SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
         editCarDate.setText(sdf.format(myCalendarDate.getTime()));
     }
+
+     */
 
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_cardetails, menu);
@@ -120,7 +82,25 @@ public class CarDetails extends AppCompatActivity {
             return true;
         }
 
-        // Save rental details
+        if (item.getItemId() == R.id.carsave) {
+            Car selectedCar = (Car) carSpinner.getSelectedItem();
+            if (selectedCar != null) {
+                // Associate the selected car with the vacation
+                selectedCar.setVacationID(vacationID);
+
+                // Check if the car is already associated with a vacation
+                if (repository.getCarById(selectedCar.getCarID()) != null) {
+                    repository.update(selectedCar); // Update if already associated
+                } else {
+                    repository.insert(selectedCar); // Insert if it's a new association
+                }
+
+                finish();
+            }
+            return true; // Indicate that the save item was handled
+        }
+
+        /* Save rental details
         if (item.getItemId() == R.id.carsave) {
             String myFormat = "MM/dd/yy";
             SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
@@ -160,8 +140,9 @@ public class CarDetails extends AppCompatActivity {
             }
             return true;
         }
+        */
 
-        // Delete the active rental
+        /* Delete the active rental
         if (item.getItemId() == R.id.cardelete) {
             for (Car car : repository.getmAllCars()) {
                 if (car.getCarID() == carID) {
@@ -179,8 +160,9 @@ public class CarDetails extends AppCompatActivity {
                 Toast.makeText(CarDetails.this, "Car rental not found", Toast.LENGTH_SHORT).show();
             }
         }
+        */
 
-        // Set an alert for the rental
+        /* Set an alert for the rental
         if (item.getItemId() == R.id.caralert) {
             String dateFromScreen = editCarDate.getText().toString();
             String alert = "Your " + carTitle + " rental is today";
@@ -202,6 +184,7 @@ public class CarDetails extends AppCompatActivity {
 
             return true;
         }
+        */
 
         return super.onOptionsItemSelected(item);
     }
@@ -211,6 +194,6 @@ public class CarDetails extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
 
-        updateLabel();
+        //updateLabel();
     }
 }

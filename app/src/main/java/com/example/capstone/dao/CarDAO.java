@@ -27,4 +27,7 @@ public interface CarDAO {
 
     @Query("SELECT * FROM CARS WHERE vacationID=:vacation ORDER BY carID ASC")
     List<Car> getAssociatedCars(int vacation);
+
+    @Query("SELECT * FROM cars WHERE carID = :carID")
+    Car getCarById(int carID);
 }

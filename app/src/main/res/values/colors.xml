@@ -2,4 +2,14 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="blue">#00BCD4</color>
+    <color name="green">#00dD82</color>
+    <color name="purple">#6A00AD</color>
+
+    <color name="leisure_traveler_background">#FFC0CB</color>
+    <color name="business_traveler_background">#ADD8E6</color>
+    <color name="frequent_traveler_background">#90EE90</color>
+    <color name="group_planner_background">#FFD700</color>
+    <color name="travel_influencer_background">#FF69B4</color>
+
 </resources>

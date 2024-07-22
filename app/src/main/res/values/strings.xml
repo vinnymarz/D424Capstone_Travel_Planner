@@ -13,4 +13,12 @@
     <string name="select_check_out_date">Select Check-out Date</string>
     <string name="add_excursion">Add Excursion</string>
     <string name="add_vacation">Add Vacation</string>
+
+    <string-array name="users">
+        <item>Leisure Traveler</item>
+        <item>Business Traveler</item>
+        <item>Frequent Traveler</item>
+        <item>Group Planner</item>
+        <item>Travel Influencer</item>
+    </string-array>
 </resources>
