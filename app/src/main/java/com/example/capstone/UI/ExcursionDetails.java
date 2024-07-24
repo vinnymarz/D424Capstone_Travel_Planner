@@ -6,6 +6,7 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -50,11 +51,22 @@ public class ExcursionDetails extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_excursion_details);
 
+        // Log intent data for debugging
+        Bundle extras = getIntent().getExtras();
+        if (extras != null) {
+            for (String key : extras.keySet()) {
+                Object value = extras.get(key);
+                Log.d("ExcursionDetails", String.format("Intent extra: %s = %s", key, value));
+            }
+        }
+
         // Initialize repository and UI elements
         repository = new Repository(getApplication());
         title = getIntent().getStringExtra("title");
         editTitle = findViewById(R.id.excursionTitle);
-        editTitle.setText(title);
+        if (title != null) { // Added null check
+            editTitle.setText(title);
+        }
         excursionID = getIntent().getIntExtra("id", -1);
         vacationID = getIntent().getIntExtra("vacationID", -1);
         setDate = getIntent().getStringExtra("excursionDate");
@@ -62,29 +74,24 @@ public class ExcursionDetails extends AppCompatActivity {
         String myFormat = "MM/dd/yy";
         SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
 
-        if (setDate != null) {
+        editExcursionDate = findViewById(R.id.excursionDate);
+
+        // Set initial text for the button using string resource
+        if (setDate == null || setDate.isEmpty()) {
+            editExcursionDate.setText(getString(R.string.select_excursion_date));
+        } else {
             try {
-                Date excursionDate = sdf.parse(setDate);
-                myCalendarDate.setTime(excursionDate);
+                Date date = sdf.parse(setDate);
+                editExcursionDate.setText(sdf.format(date));
             } catch (ParseException e) {
                 e.printStackTrace();
             }
         }
 
-        editExcursionDate = findViewById(R.id.excursionDate);
-
         // Set click listener for excursion date TextView to open date picker dialog
         editExcursionDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Date date;
-                String info = editExcursionDate.getText().toString();
-                if (info.equals("")) info = setDate;
-                try {
-                    myCalendarDate.setTime(sdf.parse(info));
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                }
                 new DatePickerDialog(ExcursionDetails.this, excursionDate, myCalendarDate
                         .get(Calendar.YEAR), myCalendarDate.get(Calendar.MONTH),
                         myCalendarDate.get(Calendar.DAY_OF_MONTH)).show();
@@ -201,7 +208,8 @@ public class ExcursionDetails extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-
-        updateLabel();
+        if (setDate != null && !setDate.isEmpty()) {
+            updateLabel();
+        }
     }
 }

@@ -73,7 +73,6 @@ public class VacationDetails extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_vacation_details);
 
-
         // Initialize repository and UI elements
         repository = new Repository(getApplication());
         editTitle = findViewById(R.id.titletext);
@@ -92,13 +91,28 @@ public class VacationDetails extends AppCompatActivity {
         fromBottom = AnimationUtils.loadAnimation(this, R.anim.from_bottom_anim);
         toBottom = AnimationUtils.loadAnimation(this, R.anim.to_bottom_anim);
 
+        editStartDate = findViewById(R.id.startDate);
+        editEndDate = findViewById(R.id.endDate);
+
+        // Set default text if dates are null or empty
+        if (setStartDate == null || setStartDate.isEmpty()) {
+            editStartDate.setText(R.string.select_start_date);
+        } else {
+            editStartDate.setText(setStartDate);
+        }
+
+        if (setEndDate == null || setEndDate.isEmpty()) {
+            editEndDate.setText(R.string.select_end_date);
+        } else {
+            editEndDate.setText(setEndDate);
+        }
 
         // Set up FAB to open Excursion and Rental car buttons
         FloatingActionButton fabOpenOptions = findViewById(R.id.add_btn);
         fabOpenOptions.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-               onAddButtonClicked();
+                onAddButtonClicked();
             }
         });
 
@@ -121,7 +135,6 @@ public class VacationDetails extends AppCompatActivity {
             }
         });
 
-
         // Initialize RecyclerView for excursions
         RecyclerView recyclerView = findViewById(R.id.excursionrecyclerview);
         repository = new Repository(getApplication());
@@ -134,7 +147,6 @@ public class VacationDetails extends AppCompatActivity {
             if (e.getVacationID() == vacationID) selectedExcursions.add(e);
         }
         excursionAdapter.setmExcursions(selectedExcursions);
-
 
         // Initialize RecyclerView for cars
         RecyclerView recyclerView2 = findViewById(R.id.carrecyclerview);
@@ -164,14 +176,12 @@ public class VacationDetails extends AppCompatActivity {
             // Update the adapter with the filtered list of cars
             carAdapter.setmCars(selectedCars);
             Log.d("CarDetails", "Cars set to the adapter.");
-
         });
-
 
         String myFormat = "MM/dd/yy";
         SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
 
-        if (setStartDate != null) {
+        if (setStartDate != null && !setStartDate.isEmpty()) {
             try {
                 Date startDate = sdf.parse(setStartDate);
                 Date endDate = sdf.parse(setEndDate);
@@ -181,9 +191,6 @@ public class VacationDetails extends AppCompatActivity {
                 e.printStackTrace();
             }
         }
-
-        editStartDate = findViewById(R.id.startDate);
-        editEndDate = findViewById(R.id.endDate);
 
         editStartDate.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -215,7 +222,7 @@ public class VacationDetails extends AppCompatActivity {
             public void onClick(View view) {
                 Date date;
                 String info = editEndDate.getText().toString();
-                if (info.equals("")) info = setEndDate;
+                if (info.isEmpty()) info = setEndDate;
                 try {
                     myCalendarEnd.setTime(sdf.parse(info));
                 } catch (ParseException e) {
@@ -406,9 +413,13 @@ public class VacationDetails extends AppCompatActivity {
             carAdapter.setmCars(selectedCars);
         });
 
-        updateLabelStart();
-        updateLabelEnd();
-
+        // Set initial text for the buttons using string resource
+        if (setStartDate != null && !setStartDate.isEmpty()) {
+            updateLabelStart();
+        }
+        if (setEndDate != null && !setEndDate.isEmpty()) {
+            updateLabelEnd();
+        }
     }
 
     private void onAddButtonClicked() {

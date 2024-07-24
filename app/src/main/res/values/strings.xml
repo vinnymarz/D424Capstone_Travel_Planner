@@ -13,6 +13,11 @@
     <string name="select_check_out_date">Select Check-out Date</string>
     <string name="add_excursion">Add Excursion</string>
     <string name="add_vacation">Add Vacation</string>
+    <string name="select_start_date">Select Start Date</string>
+    <string name="select_end_date">Select End Date</string>
+    <string name="car_rental">Car Rental:</string>
+    <string name="excursions">Excursions:</string>
+    <string name="destination">Destination:</string>
 
     <string-array name="users">
         <item>Leisure Traveler</item>

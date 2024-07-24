@@ -28,14 +28,14 @@
                     android:layout_width="wrap_content"
                     android:layout_height="50dp"
                     android:padding="10dp"
-                    android:text="Vacation: "
+                    android:text="@string/destination"
                     android:textAppearance="@style/TextAppearance.AppCompat.Large" />
 
                 <EditText
                     android:id="@+id/titletext"
                     android:layout_width="wrap_content"
                     android:layout_height="50dp"
-                    android:hint="enter destination" />
+                    android:hint="@string/enter_destination" />
             </LinearLayout>
 
             <LinearLayout
@@ -47,14 +47,14 @@
                     android:layout_width="wrap_content"
                     android:layout_height="50dp"
                     android:padding="0dp"
-                    android:text="Hotel Name: "
+                    android:text="@string/hotel_name"
                     android:textAppearance="@style/TextAppearance.AppCompat.Large" />
 
                 <EditText
                     android:id="@+id/hoteltext"
                     android:layout_width="wrap_content"
                     android:layout_height="50dp"
-                    android:hint="enter hotel" />
+                    android:hint="@string/enter_hotel" />
 
             </LinearLayout>
 
@@ -71,7 +71,7 @@
                     android:layout_marginBottom="12dp"
                     android:ems="10"
                     android:padding="10dp"
-                    android:text="Select Start Date" />
+                    android:text="@string/select_start_date" />
 
                 <Button
                     android:id="@+id/endDate"
@@ -80,7 +80,7 @@
                     android:layout_marginBottom="12dp"
                     android:ems="10"
                     android:padding="10dp"
-                    android:text="Select End Date" />
+                    android:text="@string/select_end_date" />
             </LinearLayout>
 
         </LinearLayout>
@@ -104,7 +104,7 @@
         android:id="@+id/excursionsTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Excursions:"
+        android:text="@string/excursions"
         android:textStyle="bold"
         android:textSize="18sp"
         android:layout_marginTop="8dp"
@@ -124,7 +124,7 @@
         android:id="@+id/carsTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Car Rental:"
+        android:text="@string/car_rental"
         android:textStyle="bold"
         android:textSize="18sp"
         android:layout_marginTop="8dp"
