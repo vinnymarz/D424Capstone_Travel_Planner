@@ -33,7 +33,7 @@
         <activity
             android:name="com.example.capstone.UI.ExcursionDetails"
             android:exported="false"
-            android:label="Excursion Details"
+            android:label="Activity Details"
             android:parentActivityName="com.example.capstone.UI.VacationDetails" />
         <activity
             android:name="com.example.capstone.UI.VacationDetails"

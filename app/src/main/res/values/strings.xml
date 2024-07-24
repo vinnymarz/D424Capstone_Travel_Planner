@@ -18,6 +18,7 @@
     <string name="car_rental">Car Rental:</string>
     <string name="excursions">Excursions:</string>
     <string name="destination">Destination:</string>
+    <string name="select_activity_date">Select Activity Date</string>
 
     <string-array name="users">
         <item>Leisure Traveler</item>

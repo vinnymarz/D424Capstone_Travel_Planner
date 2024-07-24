@@ -3,13 +3,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/excursionsave"
-        android:title="Save Excursion" />
+        android:id="@+id/activitysave"
+        android:title="Save Activity" />
     <item
-        android:id="@+id/excursiondelete"
-        android:title="Delete Excursion" />
+        android:id="@+id/activitydelete"
+        android:title="Delete Activity" />
 
     <item
-        android:id="@+id/excursionalert"
+        android:id="@+id/activityalert"
         android:title="Set Alert" />
 </menu>

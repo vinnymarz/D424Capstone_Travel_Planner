@@ -3,11 +3,11 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/vacationsave"
-        android:title="Save Vacation" />
+        android:id="@+id/itinerarysave"
+        android:title="Save Itinerary" />
     <item
-        android:id="@+id/vacationdelete"
-        android:title="Delete Vacation" />
+        android:id="@+id/itinerarydelete"
+        android:title="Delete Itinerary" />
     <item
         android:id="@+id/alertstart"
         android:title="Alert Start" />

@@ -28,7 +28,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="50dp"
                     android:padding="10dp"
-                    android:text="Excursion: "
+                    android:text="Activity: "
                     android:textAppearance="@style/TextAppearance.AppCompat.Large" />
 
                 <EditText
@@ -36,7 +36,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:ems="10"
-                    android:hint="add excursion"
+                    android:hint="add activity"
                     android:inputType="text"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -60,7 +60,7 @@
                     android:ems="10"
                     android:inputType="date"
                     android:padding="10dp"
-                    android:text="Select Excursion Date" />
+                    android:text="@string/select_activity_date" />
 
 
             </LinearLayout>

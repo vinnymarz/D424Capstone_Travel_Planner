@@ -35,7 +35,8 @@
                     android:id="@+id/titletext"
                     android:layout_width="wrap_content"
                     android:layout_height="50dp"
-                    android:hint="@string/enter_destination" />
+                    android:hint="@string/enter_destination"
+                    android:inputType="text|textNoSuggestions" />
             </LinearLayout>
 
             <LinearLayout
@@ -54,7 +55,8 @@
                     android:id="@+id/hoteltext"
                     android:layout_width="wrap_content"
                     android:layout_height="50dp"
-                    android:hint="@string/enter_hotel" />
+                    android:hint="@string/enter_hotel"
+                    android:inputType="text|textNoSuggestions"/>
 
             </LinearLayout>
 
@@ -104,7 +106,7 @@
         android:id="@+id/excursionsTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/excursions"
+        android:text="Activity List"
         android:textStyle="bold"
         android:textSize="18sp"
         android:layout_marginTop="8dp"

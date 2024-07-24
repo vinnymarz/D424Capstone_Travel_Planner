@@ -6,6 +6,8 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.InputFilter;
+import android.text.Spanned;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -112,17 +114,20 @@ public class VacationDetails extends AppCompatActivity {
         fabOpenOptions.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                onAddButtonClicked();
-            }
+                    onAddButtonClicked();
+                }
         });
+
+        // Enable or disable the FAB based on vacationID
+        checkVacationID();
 
         // Set up FAB to open Excursion Details activity
         FloatingActionButton fabOpenExcursionDetails = findViewById(R.id.activity_btn);
         fabOpenExcursionDetails.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                openExcursionDetails(vacationID);
-            }
+                    openExcursionDetails(vacationID);
+                }
         });
 
         // Set up FAB to open Car Rental activity
@@ -130,9 +135,9 @@ public class VacationDetails extends AppCompatActivity {
         fabOpenCarRental.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Log.d("VacationDetails", "FAB to open Car Rental clicked.");
-                openCarDetails(vacationID);
-            }
+                    Log.d("VacationDetails", "FAB to open Car Rental clicked.");
+                    openCarDetails(vacationID);
+                }
         });
 
         // Initialize RecyclerView for excursions
@@ -241,6 +246,23 @@ public class VacationDetails extends AppCompatActivity {
                 updateLabelEnd();
             }
         };
+
+        // Apply input filters to restrict special characters and integers in title and hotel fields
+        InputFilter filter = new InputFilter() {
+            @Override
+            public CharSequence filter(CharSequence source, int start, int end, Spanned dest, int dstart, int dend) {
+                for (int i = start; i < end; i++) {
+                    if (!Character.isLetter(source.charAt(i)) && !Character.isWhitespace(source.charAt(i))) {
+                        Toast.makeText(VacationDetails.this, "Integers or special characters are not allowed", Toast.LENGTH_SHORT).show();
+                        return "";
+                    }
+                }
+                return null;
+            }
+        };
+
+        editTitle.setFilters(new InputFilter[]{filter});
+        editHotel.setFilters(new InputFilter[]{filter});
     }
 
     private void updateLabelStart() {
@@ -255,49 +277,56 @@ public class VacationDetails extends AppCompatActivity {
         editEndDate.setText(sdf.format(myCalendarEnd.getTime()));
     }
 
+    // Menu options
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_vacationdetails, menu);
         return true;
     }
 
+    // Input validation for Vacation Details form activity
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
             this.finish();
             return true;
         }
 
-        if (item.getItemId() == R.id.vacationsave) {
-            String myFormat = "MM/dd/yy";
-            SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
-            String startDateString = sdf.format(myCalendarStart.getTime());
-            String endDateString = sdf.format(myCalendarEnd.getTime());
-            try {
-                Date startDate = sdf.parse(startDateString);
-                Date endDate = sdf.parse(endDateString);
-                assert endDate != null;
-                if (endDate.before(startDate)) {
-                    Toast.makeText(this, "End date cannot be before start date", Toast.LENGTH_LONG).show();
-                } else {
-                    Vacation vacation;
-                    if (vacationID == -1) {
-                        if (repository.getmAllVacations().isEmpty()) vacationID = 1;
-                        else
-                            vacationID = repository.getmAllVacations().get(repository.getmAllVacations().size() - 1).getVacationId() + 1;
-                        vacation = new Vacation(vacationID, editTitle.getText().toString(), editHotel.getText().toString(), startDateString, endDateString);
-                        repository.insert(vacation);
-                        this.finish();
+        if (item.getItemId() == R.id.itinerarysave) {
+            if (validateInputs()) {
+                String myFormat = "MM/dd/yy";
+                SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
+                String startDateString = sdf.format(myCalendarStart.getTime());
+                String endDateString = sdf.format(myCalendarEnd.getTime());
+                try {
+                    Date startDate = sdf.parse(startDateString);
+                    Date endDate = sdf.parse(endDateString);
+                    assert endDate != null;
+                    if (endDate.before(startDate)) {
+                        Toast.makeText(this, "Travel end date cannot be before start date", Toast.LENGTH_LONG).show();
                     } else {
-                        vacation = new Vacation(vacationID, editTitle.getText().toString(), editHotel.getText().toString(), startDateString, endDateString);
-                        repository.update(vacation);
-                        this.finish();
+                        Vacation vacation;
+                        if (vacationID == -1) {
+                            if (repository.getmAllVacations().isEmpty()) vacationID = 1;
+                            else
+                                vacationID = repository.getmAllVacations().get(repository.getmAllVacations().size() - 1).getVacationId() + 1;
+                            vacation = new Vacation(vacationID, editTitle.getText().toString(), editHotel.getText().toString(), startDateString, endDateString);
+                            repository.insert(vacation);
+                            this.finish();
+                        } else {
+                            vacation = new Vacation(vacationID, editTitle.getText().toString(), editHotel.getText().toString(), startDateString, endDateString);
+                            repository.update(vacation);
+                            this.finish();
+                        }
                     }
+                } catch (ParseException e) {
+                    e.printStackTrace();
                 }
-            } catch (ParseException e) {
-                e.printStackTrace();
+            } else {
+                Toast.makeText(this, "All fields must be correctly completed", Toast.LENGTH_SHORT).show();
             }
+            return true;
         }
 
-        if (item.getItemId() == R.id.vacationdelete) {
+        if (item.getItemId() == R.id.itinerarydelete) {
             for (Vacation vac : repository.getmAllVacations()) {
                 if (vac.getVacationId() == vacationID) currentVacation = vac;
             }
@@ -310,20 +339,28 @@ public class VacationDetails extends AppCompatActivity {
                 Toast.makeText(VacationDetails.this, currentVacation.getVacationTitle() + " has been deleted", Toast.LENGTH_LONG).show();
                 VacationDetails.this.finish();
             } else {
-                Toast.makeText(VacationDetails.this, "Vacations with excursions cannot be deleted", Toast.LENGTH_LONG).show();
+                Toast.makeText(VacationDetails.this, "Itineraries with excursions cannot be deleted", Toast.LENGTH_LONG).show();
             }
         }
         if (item.getItemId() == R.id.alertstart) {
-            String dateFromScreen = editStartDate.getText().toString();
-            String alert = "It's time for your vacation to " + title + "!";
-            alertPicker(dateFromScreen, alert);
+            if (vacationID >= 0) {
+                String dateFromScreen = editStartDate.getText().toString();
+                String alert = "It's time for your trip to " + title + "!";
+                alertPicker(dateFromScreen, alert);
+            } else {
+                Toast.makeText(this, "Itinerary must be saved prior to setting alert.", Toast.LENGTH_SHORT).show();
+            }
             return true;
         }
 
         if (item.getItemId() == R.id.alertend) {
-            String dateFromScreen = editEndDate.getText().toString();
-            String alert = "Your vacation in " + title + " is over.";
-            alertPicker(dateFromScreen, alert);
+            if (vacationID >= 0) {
+                String dateFromScreen = editEndDate.getText().toString();
+                String alert = "Your trip in " + title + " is over.";
+                alertPicker(dateFromScreen, alert);
+            } else {
+                Toast.makeText(this, "Itinerary must be saved prior to setting alert.", Toast.LENGTH_SHORT).show();
+            }
             return true;
         }
 
@@ -332,7 +369,7 @@ public class VacationDetails extends AppCompatActivity {
             sentIntent.setAction(Intent.ACTION_SEND);
             sentIntent.putExtra(Intent.EXTRA_TITLE, "Vacation Shared");
             StringBuilder shareData = new StringBuilder();
-            shareData.append("Vacation Destination: " + editTitle.getText().toString() + "\n");
+            shareData.append("Travel Destination: " + editTitle.getText().toString() + "\n");
             shareData.append("Hotel Name: " + editHotel.getText().toString() + "\n");
             shareData.append("Start Date: " + editStartDate.getText().toString() + "\n");
             shareData.append("End Date: " + editEndDate.getText().toString() + "\n");
@@ -342,7 +379,6 @@ public class VacationDetails extends AppCompatActivity {
             }
             for (int i = 0; i < selectedCars.size(); i++) {
                 shareData.append("Car " + (i + 1) + ": " + selectedCars.get(i).getCarTitle() + "\n");
-                shareData.append("Car " + (i + 1) + "Date: " + selectedCars.get(i).getCarDate() + "\n");
             }
 
             sentIntent.putExtra(Intent.EXTRA_TEXT, shareData.toString());
@@ -481,6 +517,42 @@ public class VacationDetails extends AppCompatActivity {
             Log.d("VacationDetails", "CarDetails activity started successfully.");
         } catch (Exception e) {
             Log.e("VacationDetails", "Error starting CarDetails activity: " + e.getMessage());
+        }
+    }
+
+    // Validate user inputs for title, hotel and dates
+    private boolean validateInputs() {
+        boolean isValid = true;
+
+        if (editTitle.getText().toString().trim().isEmpty()) {
+            editTitle.setError("Destination title is required");
+            isValid = false;
+        }
+
+        if (editHotel.getText().toString().trim().isEmpty()) {
+            editHotel.setError("Hotel name is required");
+            isValid = false;
+        }
+
+        if (editStartDate.getText().toString().equals(getString(R.string.select_start_date))) {
+            Toast.makeText(this, "Start date is required", Toast.LENGTH_SHORT).show();
+            isValid = false;
+        }
+
+        if (editEndDate.getText().toString().equals(getString(R.string.select_end_date))) {
+            Toast.makeText(this, "End date is required", Toast.LENGTH_SHORT).show();
+            isValid = false;
+        }
+
+        return isValid;
+    }
+
+    private void checkVacationID() {
+        FloatingActionButton fabOpenOptions = findViewById(R.id.add_btn);
+        if (vacationID >= 0) {
+            fabOpenOptions.setEnabled(true);
+        } else {
+            fabOpenOptions.setEnabled(false);
         }
     }
 
