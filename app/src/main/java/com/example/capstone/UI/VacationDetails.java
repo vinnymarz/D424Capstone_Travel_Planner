@@ -115,7 +115,10 @@ public class VacationDetails extends AppCompatActivity {
         FloatingActionButton fabOpenCarRental = findViewById(R.id.car_btn);
         fabOpenCarRental.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) { openCarDetails(vacationID); }
+            public void onClick(View view) {
+                Log.d("VacationDetails", "FAB to open Car Rental clicked.");
+                openCarDetails(vacationID);
+            }
         });
 
 
@@ -133,18 +136,36 @@ public class VacationDetails extends AppCompatActivity {
         excursionAdapter.setmExcursions(selectedExcursions);
 
 
-        // Initialize Recycler view for cars
+        // Initialize RecyclerView for cars
         RecyclerView recyclerView2 = findViewById(R.id.carrecyclerview);
-        repository = new Repository(getApplication());
         final CarAdapter carAdapter = new CarAdapter(this);
         recyclerView2.setAdapter(carAdapter);
         recyclerView2.setLayoutManager(new LinearLayoutManager(this));
 
-        // Populate selectedCars list with cars related to this vacation
-        for (Car c : repository.getmAllCars()) {
-            if (c.getVacationID() == vacationID) selectedCars.add(c);
-        }
-        carAdapter.setmCars(selectedCars);
+        // Observe LiveData<List<Car>>
+        repository.getmAllCars().observe(this, newCars -> {
+            List<Car> selectedCars = new ArrayList<>();
+            for (Car c : newCars) {
+                if (c.getVacationID() == vacationID) {
+                    selectedCars.add(c);
+                }
+            }
+
+            // Log the number of associated cars found
+            Log.d("CarDetails", "Number of associated cars found: " + selectedCars.size());
+            if (selectedCars.isEmpty()) {
+                Log.w("CarDetails", "No associated cars found for vacationID: " + vacationID);
+            } else {
+                for (Car car : selectedCars) {
+                    Log.d("CarDetails", "Associated car: " + car.getCarTitle());
+                }
+            }
+
+            // Update the adapter with the filtered list of cars
+            carAdapter.setmCars(selectedCars);
+            Log.d("CarDetails", "Cars set to the adapter.");
+
+        });
 
 
         String myFormat = "MM/dd/yy";
@@ -343,7 +364,7 @@ public class VacationDetails extends AppCompatActivity {
         alarmManager.set(AlarmManager.RTC_WAKEUP, trigger, sender);
     }
 
-    // To - DO: Fix RecyclerView for Cars
+
     @Override
     protected void onResume() {
         super.onResume();
@@ -365,11 +386,25 @@ public class VacationDetails extends AppCompatActivity {
         final CarAdapter carAdapter = new CarAdapter(this);
         carRecyclerView.setAdapter(carAdapter);
         carRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        List<Car> selectedCars = new ArrayList<>();
-        for (Car c : repository.getmAllCars()) {
-            if (c.getVacationID() == vacationID) selectedCars.add(c);
-        }
-        carAdapter.setmCars(selectedCars);
+
+        // Observe LiveData<List<Car>>
+        repository.getmAllCars().observe(this, newCars -> {
+
+            List<Car> selectedCars = new ArrayList<>();
+            for (Car c : newCars) {
+                if (c.getVacationID() == vacationID) selectedCars.add(c);
+            }
+
+            Log.d("VacationDetails", "Number of associated cars found: " + selectedCars.size());
+            if (selectedCars.isEmpty()) {
+                Log.w("VacationDetails", "No associated cars found for vacationID: " + vacationID);
+            } else {
+                for (Car car : selectedCars) {
+                    Log.d("VacationDetails", "Associated car: " + car.getCarTitle());
+                }
+            }
+            carAdapter.setmCars(selectedCars);
+        });
 
         updateLabelStart();
         updateLabelEnd();
@@ -425,10 +460,17 @@ public class VacationDetails extends AppCompatActivity {
     }
 
     private void openCarDetails(int vacationID) {
-        Intent intent = new Intent(VacationDetails.this, CarDetails.class);
-        intent.putExtra("vacationID", vacationID);
+        Intent intent = new Intent(VacationDetails.this, CarDetails.class);intent.putExtra("vacationID", vacationID);
+
         Log.d("VacationDetails", "Starting CarDetails with vacationID: " + vacationID);
-        startActivity(intent);
+
+        // Log the intent content for debugging
+        Log.d("VacationDetails", "Intent content: " + intent.getExtras());try {
+            startActivity(intent);
+            Log.d("VacationDetails", "CarDetails activity started successfully.");
+        } catch (Exception e) {
+            Log.e("VacationDetails", "Error starting CarDetails activity: " + e.getMessage());
+        }
     }
 
 }

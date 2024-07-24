@@ -32,13 +32,15 @@ public class CarAdapter extends RecyclerView.Adapter<CarAdapter.CarViewHolder> {
                 @Override
                 public void onClick(View view) {
                     int position = getAdapterPosition();
-                    final Car current = mCars.get(position);
-                    Intent intent = new Intent(context, CarDetails.class);
-                    intent.putExtra("id", current.getCarID());
-                    intent.putExtra("title", current.getCarTitle());
-                    intent.putExtra("vacationID", current.getVacationID());
-                    intent.putExtra("carDate", current.getCarDate());
-                    context.startActivity(intent);
+                    if (position != RecyclerView.NO_POSITION && mCars != null) {
+                        final Car current = mCars.get(position);
+                        Intent intent = new Intent(context, CarDetails.class);
+                        intent.putExtra("id", current.getCarID());
+                        intent.putExtra("title", current.getCarTitle());
+                        intent.putExtra("vacationID", current.getVacationID());
+                        intent.putExtra("carDate", current.getCarDate());
+                        context.startActivity(intent);
+                    }
                 }
             });
         }
@@ -67,9 +69,7 @@ public class CarAdapter extends RecyclerView.Adapter<CarAdapter.CarViewHolder> {
     public void onBindViewHolder(@NonNull CarAdapter.CarViewHolder holder, int position) {
         if (mCars != null) {
             Car current = mCars.get(position);
-            String carTitle = current.getCarTitle();
-            int vacationID = current.getVacationID();
-            holder.carItemView.setText(carTitle);
+            holder.carItemView.setText(current.getCarTitle());
         } else {
             holder.carItemView.setText("No car title");
         }
@@ -81,11 +81,8 @@ public class CarAdapter extends RecyclerView.Adapter<CarAdapter.CarViewHolder> {
         notifyDataSetChanged();
     }
 
+    @Override
     public int getItemCount() {
-        if (mCars != null) {
-            return mCars.size();
-        } else {
-            return 0;
-        }
+        return (mCars != null) ? mCars.size() : 0;
     }
 }

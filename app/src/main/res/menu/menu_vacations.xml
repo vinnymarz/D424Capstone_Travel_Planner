@@ -6,4 +6,9 @@
         android:id="@+id/mysample"
         android:title="Add Sample Vacation Data" />
 
+    <item
+        android:id="@+id/viewLogs"
+        android:title="View Logs"
+        app:showAsAction="never" />
+
 </menu>

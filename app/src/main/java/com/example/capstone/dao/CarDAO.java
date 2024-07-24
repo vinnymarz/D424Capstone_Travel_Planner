@@ -1,5 +1,6 @@
 package com.example.capstone.dao;
 
+import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
@@ -22,12 +23,17 @@ public interface CarDAO {
     @Delete
     void delete(Car car);
 
+    // Changed return type to LiveData<List<Car>> for real-time data observation
     @Query("SELECT * FROM CARS ORDER BY carID ASC")
-    List<Car> getAllCars();
+    LiveData<List<Car>> getAllCars();
 
+    // Changed return type to LiveData<List<Car>> for real-time data observation
     @Query("SELECT * FROM CARS WHERE vacationID=:vacation ORDER BY carID ASC")
-    List<Car> getAssociatedCars(int vacation);
+    LiveData<List<Car>> getAssociatedCars(int vacation);
 
-    @Query("SELECT * FROM cars WHERE carID = :carID")
+    @Query("SELECT * FROM CARS WHERE carID = :carID")
     Car getCarById(int carID);
+
+    @Query("SELECT * FROM CARS WHERE vacationID = :vacationID")
+    List<Car> getCarsByVacationId(int vacationID);
 }

@@ -1,6 +1,10 @@
 package com.example.capstone.database;
 
 import android.app.Application;
+import android.util.Log;
+
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
 
 import com.example.capstone.dao.CarDAO;
 import com.example.capstone.dao.ExcursionDAO;
@@ -19,6 +23,8 @@ public class Repository {
     private ExcursionDAO mExcursionDAO;
     private VacationDAO mVacationDAO;
     private CarDAO mCarDAO;
+    private static final String TAG = "CarDetailsActivity";
+
 
     // Lists to hold all vacations and excursions
     private List<Vacation> mAllVacations;
@@ -71,14 +77,25 @@ public class Repository {
 
     public void delete(Vacation vacation) {
         databaseExecutor.execute(() -> {
+            // Fetch associated cars
+            List<Car> associatedCars = mCarDAO.getCarsByVacationId(vacation.getVacationId());
+
+            // Delete associated cars
+            for (Car car : associatedCars) {
+                mCarDAO.delete(car);
+            }
+
+            // Delete the vacation
             mVacationDAO.delete(vacation);
         });
-        try{
+        try {
             Thread.sleep(1000);
-        } catch(InterruptedException e) {
+        } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
     }
+
+    // EXCURSIONS
 
     public List<Excursion> getmAllExcursions() {
         databaseExecutor.execute(() -> {
@@ -137,49 +154,41 @@ public class Repository {
         }
     }
 
-    public List<Car> getmAllCars() {
-        databaseExecutor.execute(() -> {
-            mAllCars = mCarDAO.getAllCars();
-        });
-        try{
-            Thread.sleep(1000);
-        } catch(InterruptedException e) {
-            throw new RuntimeException(e);
-        }
-        return mAllCars;
+    // CARS
+
+    public LiveData<List<Car>> getAllCars() {
+        return mCarDAO.getAllCars();
     }
 
-    public List<Car> getAssociatedCars(int vacationID) {
-        databaseExecutor.execute(() -> {
-            mAllCars = mCarDAO.getAssociatedCars(vacationID);
-        });
-        try{
-            Thread.sleep(1000);
-        } catch(InterruptedException e) {
-            throw new RuntimeException(e);
-        }
-        return mAllCars;
+    public LiveData<List<Car>> getAssociatedCars(int vacationID) {
+        Log.d(TAG, "getAssociatedCars called for vacationID: " + vacationID);
+        return mCarDAO.getAssociatedCars(vacationID);
     }
 
-    public List<Car> getAvailableCars(int vacationId) {
-        List<Car> availableCarsList = new ArrayList<>();
+    public LiveData<List<Car>> getmAllCars() {
+        return mCarDAO.getAllCars();
+    }
 
-        // Use the ExecutorService to run the database query on a background thread
+    public LiveData<List<Car>> getAvailableCars(int vacationId) {
+        MutableLiveData<List<Car>> availableCarsList = new MutableLiveData<>();
+
         databaseExecutor.execute(() -> {
-            // Fetch the vacation by its ID
+            List<Car> cars = new ArrayList<>();
             Vacation vacation = getVacationById(vacationId);
 
             if (vacation != null) {
                 String vacationStartDate = vacation.getStartDate();
                 String vacationEndDate = vacation.getEndDate();
 
-                availableCarsList.add(new Car(1, "KIA Carnival", -1, vacationStartDate + " - " + vacationEndDate));
-                availableCarsList.add(new Car(2, "Honda Accord", -1, vacationStartDate + " - " + vacationEndDate));
-                availableCarsList.add(new Car(3, "Ford Mustang", -1, vacationStartDate + " - " + vacationEndDate));
-                availableCarsList.add(new Car(4, "Dodge 1500", -1, vacationStartDate + " - " + vacationEndDate));
-                availableCarsList.add(new Car(5, "Chevrolet Tahoe", -1, vacationStartDate + " - " + vacationEndDate));
-                availableCarsList.add(new Car(6, "Ford Transit", -1, vacationStartDate + " - " + vacationEndDate));
+                cars.add(new Car(1, "KIA Carnival", -1, vacationStartDate + " - " + vacationEndDate));
+                cars.add(new Car(2, "Honda Accord", -1, vacationStartDate + " - " + vacationEndDate));
+                cars.add(new Car(3, "Ford Mustang", -1, vacationStartDate + " - " + vacationEndDate));
+                cars.add(new Car(4, "Dodge 1500", -1, vacationStartDate + " - " + vacationEndDate));
+                cars.add(new Car(5, "Chevrolet Tahoe", -1, vacationStartDate + " - " + vacationEndDate));
+                cars.add(new Car(6, "Ford Transit", -1, vacationStartDate + " - " + vacationEndDate));
             }
+
+            availableCarsList.postValue(cars);
         });
 
         return availableCarsList;
@@ -190,40 +199,32 @@ public class Repository {
         return mVacationDAO.getVacationById(vacationId);
     }
 
-    public void insert(Car car) {
-        databaseExecutor.execute(() -> {
-            mCarDAO.insert(car);
-        });
-        try{
-            Thread.sleep(1000);
-        } catch(InterruptedException e) {
-            throw new RuntimeException(e);
-        }
+    public void insert(Car car)
+    {
+        databaseExecutor.execute(() -> mCarDAO.insert(car));
+        Log.d(TAG, "Inserting car: " + car.toString());
     }
 
     public void update(Car car) {
-        databaseExecutor.execute(() -> {
-            mCarDAO.update(car);
-        });
-        try{
-            Thread.sleep(1000);
-        } catch(InterruptedException e) {
-            throw new RuntimeException(e);
-        }
+        databaseExecutor.execute(() -> mCarDAO.update(car));
     }
 
     public void delete(Car car) {
-        databaseExecutor.execute(() -> {
-            mCarDAO.delete(car);
-        });
-        try{
-            Thread.sleep(1000);
-        } catch(InterruptedException e) {
-            throw new RuntimeException(e);
-        }
+        databaseExecutor.execute(() -> mCarDAO.delete(car));
     }
 
     public Car getCarById(int carId) {
         return mCarDAO.getCarById(carId);
+    }
+
+    public void saveCar(Car car) {
+        databaseExecutor.execute(() -> {
+            Car existingCar = mCarDAO.getCarById(car.getCarID());
+            if (existingCar == null) {
+                mCarDAO.insert(car);
+            } else {
+                mCarDAO.update(car);
+            }
+        });
     }
 }

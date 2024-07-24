@@ -5,11 +5,14 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.util.Log;
+
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.capstone.entities.LogUtils;
 import com.example.d424.capstone.R;
 import com.example.capstone.database.Repository;
 import com.example.capstone.entities.Excursion;
@@ -34,6 +37,8 @@ public class Vacations extends AppCompatActivity {
             }
         });
 
+        Log.d("Vacations", "onCreate called"); // Log activity creation
+
         // Initialize RecyclerView and populate it with vacation data
         RecyclerView recyclerView = findViewById(R.id.recyclerview);
         repository = new Repository(getApplication());
@@ -42,12 +47,14 @@ public class Vacations extends AppCompatActivity {
         recyclerView.setAdapter(vacationAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         vacationAdapter.setVacations(allVacations);
+        Log.d("Vacations", "Vacations set to adapter, count: " +allVacations.size()); // Log after setting vacations
     }
 
     // Inflate the menu for the Vacations activity
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_vacations, menu);
+        Log.d("Vacations", "onCreateOptionsMenu called");
         return true;
     }
 
@@ -55,6 +62,7 @@ public class Vacations extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        Log.d("Vacations", "onResume called"); // Log when activity resumes
         List<Vacation> allVacations = repository.getmAllVacations();
         RecyclerView recyclerView = findViewById(R.id.recyclerview);
         final VacationAdapter vacationAdapter = new VacationAdapter(this);
@@ -65,12 +73,15 @@ public class Vacations extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        //takes user back to home
+        int id = item.getItemId();
+
+        // Takes user back to home
         if (item.getItemId() == android.R.id.home) {
             this.finish();
             return true;
         }
 
+        // Inserts sample data into the database
         if (item.getItemId() == R.id.mysample) {
             repository = new Repository(getApplication());
             Vacation vacation = new Vacation(0, "Singapore", "Marina Bay Sands", "08/10/24", "08/12/24");
@@ -84,6 +95,15 @@ public class Vacations extends AppCompatActivity {
             return true;
         }
 
-        return true;
+        // Handle navigation to the Logging Activity
+        if (id == R.id.viewLogs) {
+            // Log messages first
+            Log.d("Vacations", "Navigating to Logging activity");// Then navigate
+            Intent intent = new Intent(Vacations.this, Logging.class);
+            startActivity(intent);
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 }

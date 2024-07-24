@@ -15,6 +15,11 @@
         android:theme="@style/Theme.D308VacationPlanner"
         tools:targetApi="31">
         <activity
+            android:name="com.example.capstone.UI.Logging"
+            android:exported="false"
+            android:label="Log Details"
+            android:parentActivityName="com.example.capstone.UI.Vacations"/>
+        <activity
             android:name="com.example.capstone.UI.CarDetails"
             android:exported="false"
             android:label="Car Rental Details"
