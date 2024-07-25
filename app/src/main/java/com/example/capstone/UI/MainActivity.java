@@ -60,7 +60,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         int backgroundColor = R.color.blue; // Default background color
-        int backgroundImage = R.drawable.default_background; // Default background image
+        int backgroundImage = R.drawable.plane_background; // Default background image
 
         // Use a switch statement with an enum for better readability and type safety
         switch (Objects.requireNonNull(UserType.fromString(selectedUserType))) {

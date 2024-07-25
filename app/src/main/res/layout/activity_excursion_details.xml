@@ -8,9 +8,9 @@
 
     <ScrollView
         android:id="@+id/scrollView"
-        android:layout_width="414dp"
-        android:layout_height="286dp"
-        android:background="#00d482"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/activity_background"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
@@ -27,6 +27,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="50dp"
+                    android:layout_marginTop="100dp"
                     android:padding="10dp"
                     android:text="Activity: "
                     android:textAppearance="@style/TextAppearance.AppCompat.Large" />
@@ -35,6 +36,8 @@
                     android:id="@+id/excursionTitle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="100dp"
+
                     android:ems="10"
                     android:hint="add activity"
                     android:inputType="text"

@@ -6,7 +6,7 @@
     android:id="@+id/mainConstraintLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/default_background"
+    android:background="@drawable/plane_background"
     tools:context="com.example.capstone.UI.MainActivity">
 
     <com.google.android.material.textfield.TextInputLayout
