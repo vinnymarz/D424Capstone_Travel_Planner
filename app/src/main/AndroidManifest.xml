@@ -18,7 +18,7 @@
             android:name="com.example.capstone.UI.Logging"
             android:exported="false"
             android:label="Log Details"
-            android:parentActivityName="com.example.capstone.UI.Vacations"/>
+            android:parentActivityName="com.example.capstone.UI.Vacations" />
         <activity
             android:name="com.example.capstone.UI.CarDetails"
             android:exported="false"
@@ -29,6 +29,12 @@
             android:name="com.example.capstone.UI.MyReceiver"
             android:enabled="true"
             android:exported="true" />
+
+        <activity
+            android:name="com.example.capstone.UI.MainActivity"
+            android:exported="false"
+            android:label="Home" />
+
 
         <activity
             android:name="com.example.capstone.UI.ExcursionDetails"
@@ -45,10 +51,11 @@
             android:exported="false"
             android:label="Saved Travel Itineraries"
             android:parentActivityName="com.example.capstone.UI.MainActivity" />
+
         <activity
-            android:name="com.example.capstone.UI.MainActivity"
+            android:name="com.example.capstone.UI.SignInActivity"
             android:exported="true"
-            android:label="Home">
+            android:label="User Login">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
