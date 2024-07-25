@@ -9,6 +9,7 @@ import android.widget.Button;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.content.ContextCompat;
 
 import com.example.d424.capstone.R;
 
@@ -59,28 +60,35 @@ public class MainActivity extends AppCompatActivity {
         }
 
         int backgroundColor = R.color.blue; // Default background color
+        int backgroundImage = R.drawable.default_background; // Default background image
 
         // Use a switch statement with an enum for better readability and type safety
         switch (Objects.requireNonNull(UserType.fromString(selectedUserType))) {
             case LEISURE_TRAVELER:
                 backgroundColor = R.color.leisure_traveler_background;
+                backgroundImage = R.drawable.leisure_traveler_background_image;
                 break;
             case BUSINESS_TRAVELER:
                 backgroundColor = R.color.business_traveler_background;
+                backgroundImage = R.drawable.business_traveler_background_image;
                 break;
             case FREQUENT_TRAVELER:
                 backgroundColor = R.color.frequent_traveler_background;
+                backgroundImage = R.drawable.frequent_traveler_background_image;
                 break;
             case GROUP_PLANNER:
                 backgroundColor = R.color.group_planner_background;
+                backgroundImage = R.drawable.group_planner_background_image;
                 break;
             case TRAVEL_INFLUENCER:
                 backgroundColor = R.color.travel_influencer_background;
+                backgroundImage = R.drawable.travel_influencer_background_image;
                 break;
             // Default case is already handled by the initial value of backgroundColor
         }
 
-        constraintLayout.setBackgroundColor(getResources().getColor(backgroundColor));
+        constraintLayout.setBackgroundColor(ContextCompat.getColor(this, backgroundColor));
+        constraintLayout.setBackgroundResource(backgroundImage);
     }
 
     // Define an enum for user types

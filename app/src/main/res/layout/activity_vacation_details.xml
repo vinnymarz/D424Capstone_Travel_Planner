@@ -4,13 +4,16 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/black"
     tools:context="com.example.capstone.UI.VacationDetails">
 
     <ScrollView
         android:id="@+id/scrollView"
-        android:layout_width="414dp"
-        android:layout_height="286dp"
-        android:background="#00d482"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginBottom="16dp"
+        android:background="@drawable/default_background"
+        app:layout_constraintBottom_toTopOf="@+id/add_btn"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
@@ -85,6 +88,36 @@
                     android:text="@string/select_end_date" />
             </LinearLayout>
 
+            <TextView
+                android:id="@+id/excursionsTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Activity List"
+                android:textStyle="bold"
+                android:textSize="18sp"
+                android:layout_marginTop="8dp" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/excursionrecyclerview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="16dp" />
+
+            <TextView
+                android:id="@+id/carsTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/car_rental"
+                android:textStyle="bold"
+                android:textSize="18sp"
+                android:layout_marginTop="8dp" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/carrecyclerview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="16dp" />
+
         </LinearLayout>
     </ScrollView>
 
@@ -101,46 +134,6 @@
         app:layout_constraintEnd_toEndOf="@+id/add_btn"
         app:rippleColor="#00d482"
         app:srcCompat="@drawable/baseline_activity" />
-
-    <TextView
-        android:id="@+id/excursionsTitle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Activity List"
-        android:textStyle="bold"
-        android:textSize="18sp"
-        android:layout_marginTop="8dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/scrollView" />
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/excursionrecyclerview"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:padding="16dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/excursionsTitle" />
-
-    <TextView
-        android:id="@+id/carsTitle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/car_rental"
-        android:textStyle="bold"
-        android:textSize="18sp"
-        android:layout_marginTop="8dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/excursionrecyclerview" />
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/carrecyclerview"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:padding="16dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/carsTitle" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/add_btn"

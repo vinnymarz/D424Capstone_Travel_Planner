@@ -6,9 +6,9 @@
     <color name="green">#00dD82</color>
     <color name="purple">#6A00AD</color>
 
-    <color name="leisure_traveler_background">#FFC0CB</color>
-    <color name="business_traveler_background">#ADD8E6</color>
-    <color name="frequent_traveler_background">#90EE90</color>
+    <color name="leisure_traveler_background">#FF7F50</color>
+    <color name="business_traveler_background">#DCDCDC</color>
+    <color name="frequent_traveler_background">#32C896</color>
     <color name="group_planner_background">#FFD700</color>
     <color name="travel_influencer_background">#FF69B4</color>
 
