@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/vacations_background"
-    tools:context="com.example.capstone.UI.Vacations">
+    tools:context="com.d424.capstone.UI.Vacations">
 
 
 
