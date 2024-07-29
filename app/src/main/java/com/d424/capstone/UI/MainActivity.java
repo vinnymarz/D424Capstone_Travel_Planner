@@ -53,7 +53,7 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    private void changeBackgroundColor(String selectedUserType) {
+    public void changeBackgroundColor(String selectedUserType) {
         ConstraintLayout constraintLayout = findViewById(R.id.mainConstraintLayout);
         if (constraintLayout == null) {
             return; // Handle the case where the layout is not found

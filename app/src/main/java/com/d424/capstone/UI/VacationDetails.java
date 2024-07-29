@@ -521,7 +521,7 @@ public class VacationDetails extends AppCompatActivity {
     }
 
     // Validate user inputs for title, hotel and dates
-    private boolean validateInputs() {
+    public boolean validateInputs() {
         boolean isValid = true;
 
         if (editTitle.getText().toString().trim().isEmpty()) {

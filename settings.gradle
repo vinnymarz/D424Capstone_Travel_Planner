@@ -19,5 +19,5 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "D308 Vacation Planner"
+rootProject.name = "D424 Travel Planner"
 include ':app'
